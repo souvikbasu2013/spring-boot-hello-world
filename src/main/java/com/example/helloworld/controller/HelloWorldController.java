@@ -3,6 +3,7 @@ package com.example.helloworld.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.helloworld.entities.User;
+import com.example.helloworld.exception.UserNotFoundException;
 import com.example.helloworld.model.UserDetails;
 import com.example.helloworld.services.UserService;
 
@@ -44,16 +47,25 @@ public class HelloWorldController {
     
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable("id") Long id) {
-        return userService.getUser(id);
+        try {
+			return userService.getUser(id);
+		} catch (UserNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
     }
     
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        return userService.updateUser(user, id);
+        
+        try {
+        	return userService.updateUser(user, id);
+		} catch (UserNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
     }
     
     @DeleteMapping("/users/{id}")
-    public void updateUser(@PathVariable("id") Long id) {
+    public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
 }
