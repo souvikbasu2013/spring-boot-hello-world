@@ -11,12 +11,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.helloworld.entities.User;
 import com.example.helloworld.exception.UserNameNotFoundException;
 import com.example.helloworld.exception.UserNotFoundException;
-import com.example.helloworld.repositories.UserRepositories;
+import com.example.helloworld.repositories.UserRepository;
 
 @Service
 public class UserService {
 
-	@Autowired UserRepositories userRepository;
+	@Autowired UserRepository userRepository;
 	
 	public List<User> getAllUsers() {
 		return userRepository.findAll();

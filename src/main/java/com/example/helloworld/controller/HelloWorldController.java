@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,6 +23,7 @@ import com.example.helloworld.model.UserDetails;
 import com.example.helloworld.services.UserService;
 
 @RestController
+@RequestMapping(value = "/users")
 public class HelloWorldController {
 
 	@Autowired
@@ -38,17 +40,17 @@ public class HelloWorldController {
         return ud;
     }
     
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
     
-    @PostMapping(path="/createUser", produces = "application/json", consumes = "application/json")
+    @PostMapping(produces = "application/json", consumes = "application/json")
     public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
     
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long id) {
         try {
 			return userService.getUser(id);
@@ -57,13 +59,13 @@ public class HelloWorldController {
 		}
     }
     
-    @GetMapping("/users/name/{name}")
+    @GetMapping("/name/{name}")
     public User getUserByName(@PathVariable("name") String name) throws UserNameNotFoundException {
 			return userService.getUserByName(name);		
     }
 
     
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         
         try {
@@ -73,7 +75,7 @@ public class HelloWorldController {
 		}
     }
     
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
