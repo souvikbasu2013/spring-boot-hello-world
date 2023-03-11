@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.helloworld.entities.User;
+import com.example.helloworld.exception.UserNameNotFoundException;
 import com.example.helloworld.exception.UserNotFoundException;
 import com.example.helloworld.repositories.UserRepositories;
 
@@ -31,6 +32,15 @@ public class UserService {
 			return optionalUser.get();
 		}else {
 			throw new UserNotFoundException("User not found with the id...");
+		}
+	}
+	
+	public User getUserByName(String username) throws UserNameNotFoundException {
+		List<User> optionalUser = userRepository.findByUsername(username);
+		if(optionalUser!=null && optionalUser.size()>0) {
+			return optionalUser.get(0);
+		}else {
+			throw new UserNameNotFoundException("User Name "+username+" not found in the repository...");
 		}
 	}
 	

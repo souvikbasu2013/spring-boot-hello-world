@@ -2,6 +2,8 @@ package com.example.helloworld.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.helloworld.entities.User;
+import com.example.helloworld.exception.UserNameNotFoundException;
 import com.example.helloworld.exception.UserNotFoundException;
 import com.example.helloworld.model.UserDetails;
 import com.example.helloworld.services.UserService;
@@ -41,7 +44,7 @@ public class HelloWorldController {
     }
     
     @PostMapping(path="/createUser", produces = "application/json", consumes = "application/json")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
     
@@ -53,6 +56,12 @@ public class HelloWorldController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
     }
+    
+    @GetMapping("/users/name/{name}")
+    public User getUserByName(@PathVariable("name") String name) throws UserNameNotFoundException {
+			return userService.getUserByName(name);		
+    }
+
     
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
