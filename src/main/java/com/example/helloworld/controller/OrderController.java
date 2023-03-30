@@ -20,6 +20,11 @@ import com.example.helloworld.exception.UserNotFoundException;
 import com.example.helloworld.repositories.OrderRepository;
 import com.example.helloworld.repositories.UserRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "Order Management RESTful Service", value = "Order Controller", description = "Controller for order specific services")
 @RestController
 @RequestMapping("/users")
 public class OrderController {
@@ -29,7 +34,8 @@ public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	@GetMapping("/{userId}/orders")
+	@ApiOperation(value = "Retrieve list of all orders for a specific user")
+    @GetMapping("/{userId}/orders")
 	public List<Order> getAllOrders(@PathVariable Long userId) throws UserNotFoundException{
 		Optional<User> optionalUser = userRepository.findById(userId);
 		if(optionalUser.isPresent()) {
@@ -39,8 +45,9 @@ public class OrderController {
 		}
 	}
 	
-	@PostMapping("/{userId}/orders")
-	public Order createOrder(@PathVariable Long userId, @RequestBody Order order) throws UserNotFoundException{
+	@ApiOperation(value = "Create new order for a specific user")
+    @PostMapping("/{userId}/orders")
+	public Order createOrder(@ApiParam("Order information for a new order to be created.") @PathVariable Long userId, @RequestBody Order order) throws UserNotFoundException{
 		Optional<User> optionalUser = userRepository.findById(userId);
 		if(optionalUser.isPresent()) {
 			order.setUser(optionalUser.get());
