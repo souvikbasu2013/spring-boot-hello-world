@@ -15,9 +15,12 @@ import javax.validation.constraints.Size;
 
 import org.springframework.validation.annotation.Validated;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@ApiModel(description = "This model is to create a User")
 @Entity(name="Users")
 @Table(name="sys_app_user")
 @Validated
@@ -25,21 +28,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
+	@ApiModelProperty(notes = "Auto generated unique id", required = true)
 	@Id
 	private Long id;
 	
+	@ApiModelProperty(notes = "User full name", required = true)
 	@Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
 	@NotEmpty(message = "User Name can not be empty")
 	private String username;
+	
 	@Column(name = "FIRST_NAME", length = 50, nullable = true)
 	@Size(min = 2,message = "First Name should be atleast 2 characters")
 	private String firstname;
+	
 	@Column(name = "LAST_NAME", length = 50, nullable = true)
 	private String lastname;
+	
 	@Column(name = "EMAIL_ADDRESS", length = 50, nullable = true)
 	private String email;
+	
 	@Column(name = "ROLE", length = 50, nullable = true)
 	private String role;
+	
+	@ApiModelProperty(notes = "Social Security Number", required = true)
 	@Column(name = "SSN", length = 50, nullable = false, unique = true)
 	private String ssn;
 	
