@@ -22,6 +22,11 @@ import com.example.helloworld.exception.UserNotFoundException;
 import com.example.helloworld.model.UserDetails;
 import com.example.helloworld.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "User Management RESTful Service", value = "User Controller", description = "Controller for user specific services")
 @RestController
 @RequestMapping(value = "/users")
 public class HelloWorldController {
@@ -40,13 +45,15 @@ public class HelloWorldController {
         return ud;
     }
     
+    @ApiOperation(value = "Retrieve list of all users")
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
     
+    @ApiOperation(value = "Create new user")
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public User createUser(@Valid @RequestBody User user) {
+    public User createUser(@ApiParam("User information for a new user to be created.") @Valid @RequestBody User user) {
         return userService.createUser(user);
     }
     
